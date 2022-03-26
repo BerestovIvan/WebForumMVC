@@ -10,7 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using WebForumMVC.DependencyInjection;
+using WebForumMVC.Mapper;
 
 namespace WebForumMVC
 {
@@ -30,12 +31,37 @@ namespace WebForumMVC
 
             services.AddControllersWithViews();
 
+            services.AddAutoMapper(typeof(MapperBLLAndApi), typeof(MapperBLLAndDAL));
+
+            DI.AddDependencyInjection(services);
+
             services.AddDbContext<ApplicationDbContext>(options => options.
           UseSqlServer(Configuration.GetConnectionString("WebForumMVC")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
          .AddEntityFrameworkStores<ApplicationDbContext>()
          .AddDefaultTokenProviders();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+
+           .AddJwtBearer(options =>
+           {
+               options.SaveToken = true;
+               options.RequireHttpsMetadata = false;
+               options.TokenValidationParameters = new TokenValidationParameters()
+               {
+                   ValidateIssuer = true,
+                   ValidateAudience = true,
+                   ValidAudience = Configuration["JWT:ValidAudience"],
+                   ValidIssuer = Configuration["JWT:ValidIssuer"],
+                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:SecretKey"]))
+               };
+           });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
