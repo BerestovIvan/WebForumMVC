@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebForumMVC", "WebForumMVC\WebForumMVC.csproj", "{FC2554DA-058B-4347-938F-151E76557F00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{774BAE76-9DE9-4D9F-A501-738C64E092D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{F86B1ECE-79F4-46AD-B7E7-F104DEC34BA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{FC2554DA-058B-4347-938F-151E76557F00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC2554DA-058B-4347-938F-151E76557F00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC2554DA-058B-4347-938F-151E76557F00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{774BAE76-9DE9-4D9F-A501-738C64E092D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{774BAE76-9DE9-4D9F-A501-738C64E092D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{774BAE76-9DE9-4D9F-A501-738C64E092D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{774BAE76-9DE9-4D9F-A501-738C64E092D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F86B1ECE-79F4-46AD-B7E7-F104DEC34BA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F86B1ECE-79F4-46AD-B7E7-F104DEC34BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F86B1ECE-79F4-46AD-B7E7-F104DEC34BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F86B1ECE-79F4-46AD-B7E7-F104DEC34BA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
