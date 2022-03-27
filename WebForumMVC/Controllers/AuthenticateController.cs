@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebForumMVC.Controllers
 {
@@ -40,6 +41,7 @@ namespace WebForumMVC.Controllers
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpPost("Register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterPostModel registerPostModel)
         {

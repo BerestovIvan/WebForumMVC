@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Models;
 using BLL.ServiceInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,7 @@ namespace WebForumMVC.Controllers
             return Ok(mapper.Map<ArticleViewModel>(articleViewModels));
         }
 
+        [Authorize(Roles ="User")]
         [HttpPost("Create")]
         public async Task<ActionResult<ArticlePostModel>> Create([FromBody] ArticlePostModel articlePostModel)
         {
@@ -46,6 +48,7 @@ namespace WebForumMVC.Controllers
             return Created("~/api/article/" + articlePostModel.Id, articlePostModel);
         }
 
+        [Authorize]
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
@@ -53,6 +56,7 @@ namespace WebForumMVC.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task<ActionResult<ArticlePutModel>> Update([FromBody] ArticlePutModel articlePutModel)
         {

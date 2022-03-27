@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shop.Controllers
 {
@@ -40,6 +41,7 @@ namespace Shop.Controllers
             return Ok(mapper.Map<CommentViewModel>(commentViewModel));
         }
 
+        [Authorize]
         [HttpPost("Create")]
         public async Task<ActionResult<CommentPostModel>> Create([FromBody] CommentPostModel commentPostModel)
         {
@@ -49,6 +51,7 @@ namespace Shop.Controllers
             return Created("~/api/comment/" + commentPostModel.Id, commentPostModel);
         }
 
+        [Authorize]
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
@@ -56,6 +59,7 @@ namespace Shop.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task<ActionResult<CommentPutModel>> Update([FromBody] CommentPutModel commentPutModel)
         {

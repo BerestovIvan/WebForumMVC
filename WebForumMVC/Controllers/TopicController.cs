@@ -8,6 +8,7 @@ using WebForumMVC.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebForumMVC.Controllers
 {
@@ -37,6 +38,7 @@ namespace WebForumMVC.Controllers
             return Ok(mapper.Map<TopicViewModel>(topicViewModels));
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpPost("Create")]
         public async Task<ActionResult<TopicPostModel>> Create([FromBody] TopicPostModel topicPostModel)
         {
@@ -46,6 +48,7 @@ namespace WebForumMVC.Controllers
             return Created("~/api/topic/" + topicPostModel.Id, topicPostModel);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
@@ -53,6 +56,7 @@ namespace WebForumMVC.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("Update")]
         public async Task<ActionResult<TopicPutModel>> Update([FromBody] TopicPutModel topicPutModel)
         {

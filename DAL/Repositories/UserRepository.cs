@@ -31,6 +31,12 @@ namespace DAL.Repositories
             if (userExists != null)
                 return null;
             var result = await userManager.CreateAsync(applicationUser, applicationUser.Password);
+            if (!result.Succeeded)
+                return result;
+            if (await roleManager.RoleExistsAsync(UserRoles.User.ToString()))
+            {
+                await userManager.AddToRoleAsync(applicationUser, UserRoles.User.ToString());
+            }
             return result;
         }
 
@@ -44,10 +50,10 @@ namespace DAL.Repositories
             if (!result.Succeeded)
                 return result;
 
-            if (!await roleManager.RoleExistsAsync(UserRoles.Admin.ToString()))
-                await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin.ToString()));
-            if (!await roleManager.RoleExistsAsync(UserRoles.User.ToString()))
-                await roleManager.CreateAsync(new IdentityRole(UserRoles.User.ToString()));
+            //if (!await roleManager.RoleExistsAsync(UserRoles.Admin.ToString()))
+            //    await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin.ToString()));
+            //if (!await roleManager.RoleExistsAsync(UserRoles.User.ToString()))
+            //    await roleManager.CreateAsync(new IdentityRole(UserRoles.User.ToString()));
             if (await roleManager.RoleExistsAsync(UserRoles.Admin.ToString()))
             {
                 await userManager.AddToRoleAsync(applicationUser, UserRoles.Admin.ToString());
