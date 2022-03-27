@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BLL.ServiceInterfaces
 {
-    interface IArticleService
+    public interface IArticleService
     {
         Task<IEnumerable<ArticleModel>> Get();
         Task<ArticleModel> Get(Guid id);
