@@ -12,6 +12,9 @@ namespace WebForumMVC.DependencyInjection
         {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
+
+            services.AddTransient<ITopicService, TopicService>();
+            services.AddTransient<ITopicRepository, TopicRepository>();
         }
     }
 }

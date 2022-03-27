@@ -19,6 +19,9 @@ namespace WebForumMVC.Mapper
                 ForMember(applicationUser => applicationUser.UserName,
                 loginModel => loginModel.MapFrom(src => src.Email));
 
+            CreateMap<TopicModel, Topic>().ReverseMap();
+
+
         }
     }
 }
