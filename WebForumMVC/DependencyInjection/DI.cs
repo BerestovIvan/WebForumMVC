@@ -18,6 +18,9 @@ namespace WebForumMVC.DependencyInjection
 
             services.AddTransient<IArticleService, ArticleService>();
             services.AddTransient<IArticleRepository, ArticleRepository>();
+
+            services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<ICommentService, CommentService>();
         }
     }
 }

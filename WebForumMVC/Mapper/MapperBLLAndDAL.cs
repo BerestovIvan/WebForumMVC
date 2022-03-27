@@ -22,8 +22,9 @@ namespace WebForumMVC.Mapper
             CreateMap<TopicModel, Topic>().ReverseMap();
 
             CreateMap<ArticleModel, Article>().ReverseMap();
-
             CreateMap<UserModel, ApplicationUser>().ReverseMap();
+
+            CreateMap<CommentModel, Comment>().ReverseMap();
 
         }
     }
