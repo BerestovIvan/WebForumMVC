@@ -1,6 +1,5 @@
 ﻿using BLL.Models;
 using Microsoft.AspNetCore.Identity;
-using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 
 namespace BLL.ServiceInterfaces
@@ -9,6 +8,6 @@ namespace BLL.ServiceInterfaces
     {
         Task<IdentityResult> Register(RegisterModel registerModel);
         Task<IdentityResult> RegisterAdmin(RegisterModel registerModel);
-        Task<JwtSecurityToken> Login(LoginModel loginModel);
+        Task<LoginResultModel> Login(LoginModel loginModel);
     }
 }

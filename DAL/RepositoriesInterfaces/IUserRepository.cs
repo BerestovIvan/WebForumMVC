@@ -1,4 +1,5 @@
 ﻿using DAL.Entity;
+using DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
@@ -9,6 +10,6 @@ namespace DAL.RepositoriesInterfaces
     {
         Task<IdentityResult> Register(ApplicationUser applicationUser);
         Task<IdentityResult> RegisterAdmin(ApplicationUser applicationUser);
-        Task<JwtSecurityToken> Login(ApplicationUser applicationUser);
+        Task<LoginResult> Login(ApplicationUser applicationUser);
     }
 }

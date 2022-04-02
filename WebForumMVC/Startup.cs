@@ -3,6 +3,7 @@ using DAL.Entity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,8 @@ namespace WebForumMVC
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc().AddSessionStateTempDataProvider();
+            services.AddSession();
 
             services.AddControllersWithViews();
 
@@ -78,11 +80,32 @@ namespace WebForumMVC
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
+            app.Use(async (context, next) =>
+            {
+                var token = context.Session.GetString("token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    //context.Request.Headers.Add("Content-Type", "application/json ");
+                    context.Request.Headers.Add("Authorization", "Bearer " + token);
+                }
+                await next();
+            });
+
+            app.Use(async (context, next) =>
+            {
+                var userId = context.Session.GetString("UserId");
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    context.Request.Headers.Add("UserId", userId);
+                }
+                await next();
+            });
+
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.UseEndpoints(endpoints =>
             {

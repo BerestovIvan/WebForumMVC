@@ -26,6 +26,13 @@ namespace WebForumMVC.Mapper
             CreateMap<CommentViewModel, CommentModel>().ReverseMap();
             CreateMap<CommentPostModel, CommentModel>().ReverseMap();
             CreateMap<CommentPutModel, CommentModel>().ReverseMap();
+
+            CreateMap<ArticleViewModel, ArticlePutModel>().ReverseMap();
+
+            CreateMap<LoginResultModel, LoginResultPostModel>().ReverseMap();
+
+            CreateMap<ArticlePutModel, ArticleViewModel>().ReverseMap();
+            CreateMap<TopicPutModel, TopicViewModel>().ReverseMap();
         }
     }
 }

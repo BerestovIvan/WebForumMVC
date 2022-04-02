@@ -4,7 +4,6 @@ using BLL.ServiceInterfaces;
 using DAL.Entity;
 using DAL.RepositoriesInterfaces;
 using Microsoft.AspNetCore.Identity;
-using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 
 namespace BLL.Services
@@ -29,9 +28,10 @@ namespace BLL.Services
             return await userRepository.RegisterAdmin(mapper.Map<ApplicationUser>(registerModel));
         }
 
-        public async Task<JwtSecurityToken> Login(LoginModel loginModel)
+        public async Task<LoginResultModel> Login(LoginModel loginModel)
         {
-            return await userRepository.Login(mapper.Map<ApplicationUser>(loginModel));
+            var loginResult =  await userRepository.Login(mapper.Map<ApplicationUser>(loginModel));
+            return mapper.Map<LoginResultModel>(loginResult);
         }
 
     }

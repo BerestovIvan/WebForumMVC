@@ -1,5 +1,6 @@
 ﻿using DAL.Entity;
 using DAL.Enums;
+using DAL.Models;
 using DAL.RepositoriesInterfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -50,10 +51,10 @@ namespace DAL.Repositories
             if (!result.Succeeded)
                 return result;
 
-            //if (!await roleManager.RoleExistsAsync(UserRoles.Admin.ToString()))
-            //    await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin.ToString()));
-            //if (!await roleManager.RoleExistsAsync(UserRoles.User.ToString()))
-            //    await roleManager.CreateAsync(new IdentityRole(UserRoles.User.ToString()));
+            if (!await roleManager.RoleExistsAsync(UserRoles.Admin.ToString()))
+                await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin.ToString()));
+            if (!await roleManager.RoleExistsAsync(UserRoles.User.ToString()))
+                await roleManager.CreateAsync(new IdentityRole(UserRoles.User.ToString()));
             if (await roleManager.RoleExistsAsync(UserRoles.Admin.ToString()))
             {
                 await userManager.AddToRoleAsync(applicationUser, UserRoles.Admin.ToString());
@@ -61,7 +62,7 @@ namespace DAL.Repositories
             return result;
         }
 
-        public async Task<JwtSecurityToken> Login(ApplicationUser applicationUser)
+        public async Task<LoginResult> Login(ApplicationUser applicationUser)
         {
             var user = await userManager.FindByNameAsync(applicationUser.UserName);
             if (user != null && await userManager.CheckPasswordAsync(user, applicationUser.Password))
@@ -84,9 +85,12 @@ namespace DAL.Repositories
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
-                return token;
+                
+                return new LoginResult { Token = token, UserId = user.Id};
             }
             return null;
         }
+
+
     }
 }

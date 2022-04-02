@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Models;
 using DAL.Entity;
+using DAL.Models;
 using System;
 
 namespace WebForumMVC.Mapper
@@ -25,6 +26,8 @@ namespace WebForumMVC.Mapper
             CreateMap<UserModel, ApplicationUser>().ReverseMap();
 
             CreateMap<CommentModel, Comment>().ReverseMap();
+
+            CreateMap<LoginResultModel, LoginResult>().ReverseMap();
 
         }
     }

@@ -24,8 +24,15 @@ namespace WebForumMVC.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet("Register")]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterPostModel registerPostModel)
+        public async Task<IActionResult> Register(RegisterPostModel registerPostModel)
         {
             var result = await userService.Register(mapper.Map<RegisterModel>(registerPostModel));
             if (result == null)
@@ -38,12 +45,22 @@ namespace WebForumMVC.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
             }
+
+
+
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("Register-admin")]
+        public IActionResult RegisterAdmin()
+        {
+            return View();
         }
 
         [Authorize(Roles ="Admin")]
         [HttpPost("Register-admin")]
-        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterPostModel registerPostModel)
+        public async Task<IActionResult> RegisterAdmin(RegisterPostModel registerPostModel)
         {
             var result = await userService.RegisterAdmin(mapper.Map<RegisterModel>(registerPostModel));
             if (result == null)
@@ -61,22 +78,36 @@ namespace WebForumMVC.Controllers
             return Ok(new Response { Status = "Success", Message = "Admin created successfully!" });
         }
 
+
+        [HttpGet("Login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginPostModel model)
+        public async Task<IActionResult> Login(LoginPostModel model)
         {
-            var token = await userService.Login(mapper.Map<LoginModel>(model));
+            var loginResultModel = await userService.Login(mapper.Map<LoginModel>(model));
 
-            if (token != null)
+            var loginResultPostModel = mapper.Map<LoginResultPostModel>(loginResultModel);
+
+            if (loginResultPostModel.Token != null)
             {
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
+                HttpContext.Session.SetString("UserId", loginResultPostModel.UserId);
+                HttpContext.Session.SetString("token", new JwtSecurityTokenHandler().WriteToken(loginResultPostModel.Token));
+                Request.Headers.Add("Authorization", "Bearer" + new JwtSecurityTokenHandler().WriteToken(loginResultPostModel.Token));
+                return RedirectToAction("Index", "Articles");
             }
             return Unauthorized();
+        }
 
+        [HttpGet("Logout")]
+        public void Logout()
+        {
+            HttpContext.Session.SetString("UserId", "");
+            HttpContext.Session.SetString("Token", "");
         }
     }
 }
