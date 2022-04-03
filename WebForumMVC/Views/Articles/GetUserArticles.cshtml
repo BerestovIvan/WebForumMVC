@@ -1,0 +1,21 @@
+﻿@model IEnumerable<WebForumMVC.Models.ViewModels.ArticleViewModel>
+
+@foreach (var item in Model)
+{
+    <p>@Html.DisplayFor(modelItem => item.Title)</p>
+<textarea>@Html.DisplayFor(modelItem => item.Text)</textarea>
+    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+
+}
+
+@*<tr>
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Text)
+        </td>
+    </tr>*@

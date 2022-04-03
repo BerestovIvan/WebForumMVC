@@ -33,7 +33,15 @@ namespace WebForumMVC.Controllers
             var articleViewModels = mapper.Map<IEnumerable<ArticleViewModel>>(articleModels);
             return View(articleViewModels);
         }
-        
+
+        public async Task<IActionResult> GetUserArticles(QueryParamsViewModel paramsViewModel)
+        {
+            paramsViewModel.UserId = Request.Headers["UserId"];
+            var articleModels = await articleService.Get(mapper.Map<QueryParamsModel>(paramsViewModel));
+            var articleViewModels = mapper.Map<IEnumerable<ArticleViewModel>>(articleModels);
+            return View(articleViewModels);
+        }
+
         public async Task<IActionResult> Details(Guid id)
         {
             var article = await articleService.Get(id);
