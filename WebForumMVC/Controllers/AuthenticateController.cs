@@ -34,6 +34,11 @@ namespace WebForumMVC.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterPostModel registerPostModel)
         {
+            if (!ModelState.IsValid)
+            {
+                throw new BadHttpRequestException("Not valid model");
+            }
+
             var result = await userService.Register(mapper.Map<RegisterModel>(registerPostModel));
             if (result == null)
             {
@@ -46,9 +51,7 @@ namespace WebForumMVC.Controllers
                     new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
             }
 
-
-
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            return RedirectToAction("Index", "Topics");
         }
 
         [Authorize(Roles = "Admin")]
@@ -62,6 +65,11 @@ namespace WebForumMVC.Controllers
         [HttpPost("Register-admin")]
         public async Task<IActionResult> RegisterAdmin(RegisterPostModel registerPostModel)
         {
+            if (!ModelState.IsValid)
+            {
+                throw new BadHttpRequestException("Not valid model");
+            }
+
             var result = await userService.RegisterAdmin(mapper.Map<RegisterModel>(registerPostModel));
             if (result == null)
             {
@@ -75,7 +83,7 @@ namespace WebForumMVC.Controllers
                     new Response { Status = "Error", Message = "Admin creation failed! Please check user details and try again." });
             }
 
-            return Ok(new Response { Status = "Success", Message = "Admin created successfully!" });
+            return RedirectToAction("Index", "Topics");
         }
 
 
@@ -89,6 +97,10 @@ namespace WebForumMVC.Controllers
         [Route("login")]
         public async Task<IActionResult> Login(LoginPostModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                throw new BadHttpRequestException("Not valid model");
+            }
             var loginResultModel = await userService.Login(mapper.Map<LoginModel>(model));
 
             var loginResultPostModel = mapper.Map<LoginResultPostModel>(loginResultModel);
@@ -98,7 +110,7 @@ namespace WebForumMVC.Controllers
                 HttpContext.Session.SetString("UserId", loginResultPostModel.UserId);
                 HttpContext.Session.SetString("token", new JwtSecurityTokenHandler().WriteToken(loginResultPostModel.Token));
                 Request.Headers.Add("Authorization", "Bearer" + new JwtSecurityTokenHandler().WriteToken(loginResultPostModel.Token));
-                return RedirectToAction("Index", "Articles");
+                return RedirectToAction("Index", "Topics");
             }
             return Unauthorized();
         }
@@ -108,7 +120,7 @@ namespace WebForumMVC.Controllers
         {
             HttpContext.Session.SetString("UserId", "");
             HttpContext.Session.SetString("Token", "");
-            return RedirectToAction("Index", "Articles");
+            return RedirectToAction("Index", "Topics");
         }
     }
 }

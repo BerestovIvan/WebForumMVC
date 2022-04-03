@@ -12,6 +12,7 @@ using WebForumMVC.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebForumMVC.Models.QueryParam;
+using Microsoft.AspNetCore.Http;
 
 namespace WebForumMVC.Controllers
 {
@@ -26,7 +27,7 @@ namespace WebForumMVC.Controllers
             this.topicService = topicService;
             this.mapper = mapper;
         }
-         
+
         public async Task<IActionResult> Index(QueryParamsViewModel paramsViewModel)
         {
             var articleModels = await articleService.Get(mapper.Map<QueryParamsModel>(paramsViewModel));
@@ -64,15 +65,13 @@ namespace WebForumMVC.Controllers
         public async Task<IActionResult> Create([Bind("Title,Text,CreatorId, TopicId")] ArticlePostModel articlePostModel)
         {
             articlePostModel.CreatorId = HttpContext.Request.Headers["UserId"];
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var articleModel = await articleService.Create(mapper.Map<ArticleModel>(articlePostModel));
-                articlePostModel = mapper.Map<ArticlePostModel>(articleModel);
-                return RedirectToAction(nameof(Index));
+                throw new BadHttpRequestException("Not valid model");
             }
-            var topics = mapper.Map<IEnumerable<TopicViewModel>>(await topicService.Get());
-            ViewData["TopicId"] = new SelectList(topics, "Id", "Title", articlePostModel.TopicId);
-            return View(articlePostModel);
+            var articleModel = await articleService.Create(mapper.Map<ArticleModel>(articlePostModel));
+            articlePostModel = mapper.Map<ArticlePostModel>(articleModel);
+            return RedirectToAction(nameof(Index));
         }
 
         [Authorize]
@@ -92,15 +91,14 @@ namespace WebForumMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,Text,TopicId")] ArticlePutModel article)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                article.CreatorId = HttpContext.Request.Headers["UserId"];
-                await articleService.Update(mapper.Map<ArticleModel>(article));
-                return RedirectToAction(nameof(Index));
+                throw new BadHttpRequestException("Not valid model");
             }
-            var topics = mapper.Map<IEnumerable<TopicViewModel>>(await topicService.Get());
-            ViewData["TopicId"] = new SelectList(topics, "Id", "Title", article.TopicId);
-            return View(article);
+
+            article.CreatorId = HttpContext.Request.Headers["UserId"];
+            await articleService.Update(mapper.Map<ArticleModel>(article));
+            return RedirectToAction(nameof(Index));
         }
 
         [Authorize]

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace WebForumMVC.Controllers
 {
@@ -50,13 +51,14 @@ namespace WebForumMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(TopicPostModel topic)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                topic.Id = Guid.NewGuid();
-                await topicService.Create(mapper.Map<TopicModel>(topic));
-                return RedirectToAction(nameof(Index));
+                throw new BadHttpRequestException("Not valid model");
             }
-            return View(topic);
+
+            topic.Id = Guid.NewGuid();
+            await topicService.Create(mapper.Map<TopicModel>(topic));
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(Guid id)
@@ -77,14 +79,13 @@ namespace WebForumMVC.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-
-                await topicService.Update(mapper.Map<TopicModel>(topic));
-
-                return RedirectToAction(nameof(Index));
+                throw new BadHttpRequestException("Not valid model");
             }
-            return View(topic);
+
+            await topicService.Update(mapper.Map<TopicModel>(topic));
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(Guid id)
@@ -102,7 +103,7 @@ namespace WebForumMVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var topic = await topicService.Get(id);
-            if(topic == null)
+            if (topic == null)
             {
                 return NotFound();
             }
