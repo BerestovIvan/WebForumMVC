@@ -38,11 +38,13 @@
             @Html.DisplayNameFor(model => model.Comments)
         </dt>
         <dd class="col-sm-10">
-            @foreach(var comment in Model.Comments)
+            @foreach (var comment in Model.Comments)
             {
-                <p>@comment.ApplicationUserId</p>
+                <p>@comment.ApplicationUser.Email</p>
                 <p>@comment.Text</p>
             }
+            @{ await Html.RenderPartialAsync("/Views/Comments/Create.cshtml",
+        new WebForumMVC.Models.PostModels.CommentPostModel { ArticleId = Model.Id}); }
         </dd>
     </dl>
 </div>

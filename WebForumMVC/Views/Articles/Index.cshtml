@@ -16,9 +16,6 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Text)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Creator)
             </th>
             <th>
@@ -34,10 +31,7 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Text)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Creator.Id)
+                @Html.DisplayFor(modelItem => item.Creator.Email)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Topic.Title)

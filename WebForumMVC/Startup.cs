@@ -86,7 +86,6 @@ namespace WebForumMVC
                 var token = context.Session.GetString("token");
                 if (!string.IsNullOrEmpty(token))
                 {
-                    //context.Request.Headers.Add("Content-Type", "application/json ");
                     context.Request.Headers.Add("Authorization", "Bearer " + token);
                 }
                 await next();

@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DAL.DbContext;
-using DAL.Entity;
 using BLL.ServiceInterfaces;
 using AutoMapper;
 using WebForumMVC.Models.ViewModels;
+using WebForumMVC.Models.PostModels;
+using BLL.Models;
 
 namespace WebForumMVC.Controllers
 {
@@ -24,7 +20,6 @@ namespace WebForumMVC.Controllers
             this.mapper = mapper;
         }
 
-        // GET: Comments
         public async Task<IActionResult> Index()
         {
             var comments = await commentService.Get();
@@ -43,27 +38,17 @@ namespace WebForumMVC.Controllers
             return View(mapper.Map<CommentViewModel>(comment));
         }
 
-        // GET: Comments/Create
-        public IActionResult Create()
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("Text,ArticleId")] CommentPostModel comment)
         {
-            return View();
+            comment.ApplicationUserId = HttpContext.Request.Headers["UserId"];
+            if (ModelState.IsValid)
+            {
+                await commentService.Create(mapper.Map<CommentModel>(comment));
+                return RedirectToAction("Details", "Articles", new ArticleViewModel {Id = comment.ArticleId });
+            }
+            return Redirect("~/Shared/Error");
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Text")] Сщ comment)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        comment.Id = Guid.NewGuid();
-        //        _context.Add(comment);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", comment.ApplicationUserId);
-        //    ViewData["ArticleId"] = new SelectList(_context.Articles, "Id", "CreatorId", comment.ArticleId);
-        //    return View(comment);
-        //}
 
         //// GET: Comments/Edit/5
         //public async Task<IActionResult> Edit(Guid? id)

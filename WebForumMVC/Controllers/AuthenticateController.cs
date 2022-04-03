@@ -104,10 +104,11 @@ namespace WebForumMVC.Controllers
         }
 
         [HttpGet("Logout")]
-        public void Logout()
+        public IActionResult Logout()
         {
             HttpContext.Session.SetString("UserId", "");
             HttpContext.Session.SetString("Token", "");
+            return RedirectToAction("Index", "Articles");
         }
     }
 }
