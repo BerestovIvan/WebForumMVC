@@ -9,5 +9,6 @@ namespace BLL.ServiceInterfaces
         Task<IdentityResult> Register(RegisterModel registerModel);
         Task<IdentityResult> RegisterAdmin(RegisterModel registerModel);
         Task<LoginResultModel> Login(LoginModel loginModel);
+        Task<IdentityResult> ChangePassword(UserModel userModel);
     }
 }

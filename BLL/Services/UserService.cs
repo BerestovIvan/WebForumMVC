@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BLL.Exceptions;
 using BLL.Models;
 using BLL.ServiceInterfaces;
 using DAL.Entity;
@@ -33,6 +34,21 @@ namespace BLL.Services
             var loginResult =  await userRepository.Login(mapper.Map<ApplicationUser>(loginModel));
             return mapper.Map<LoginResultModel>(loginResult);
         }
+
+        public async Task<IdentityResult> ChangePassword(UserModel userModel)
+        {
+            var result = await userRepository.ChangePassword(mapper.Map<ApplicationUser>(userModel));
+            if(result == null)
+            {
+                throw new EntityNotFoundException("Can't find user");
+            }
+            if(!result.Succeeded)
+            {
+                throw new PasswordChangeException();
+            }
+            return result;
+        }
+
 
     }
 }

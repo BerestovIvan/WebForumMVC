@@ -11,5 +11,6 @@ namespace DAL.RepositoriesInterfaces
         Task<IdentityResult> Register(ApplicationUser applicationUser);
         Task<IdentityResult> RegisterAdmin(ApplicationUser applicationUser);
         Task<LoginResult> Login(ApplicationUser applicationUser);
+        Task<IdentityResult> ChangePassword(ApplicationUser applicationUser);
     }
 }

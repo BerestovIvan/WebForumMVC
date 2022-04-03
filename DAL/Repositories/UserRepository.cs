@@ -91,6 +91,16 @@ namespace DAL.Repositories
             return null;
         }
 
-
+        public async Task<IdentityResult> ChangePassword(ApplicationUser applicationUser)
+        {
+            var user = await userManager.FindByIdAsync(applicationUser.Id);
+            if (user == null)
+            {
+                return null;
+            }
+            user.PasswordHash = userManager.PasswordHasher.HashPassword(user, applicationUser.Password);
+            var result = await userManager.UpdateAsync(user);
+            return result;
+        }
     }
 }

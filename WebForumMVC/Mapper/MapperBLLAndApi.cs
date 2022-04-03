@@ -36,6 +36,8 @@ namespace WebForumMVC.Mapper
             CreateMap<TopicPutModel, TopicViewModel>().ReverseMap();
 
             CreateMap<QueryParamsModel, QueryParamsViewModel>().ReverseMap();
+
+            CreateMap<UserPutModel, UserModel>().ReverseMap();
         }
     }
 }
