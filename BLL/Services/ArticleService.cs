@@ -3,6 +3,7 @@ using BLL.Exceptions;
 using BLL.Models;
 using BLL.ServiceInterfaces;
 using DAL.Entity;
+using DAL.Models;
 using DAL.RepositoriesInterfaces;
 using System;
 using System.Collections.Generic;
@@ -39,9 +40,9 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<ArticleModel>> Get()
+        public async Task<IEnumerable<ArticleModel>> Get(QueryParamsModel queryParamsModel)
         {
-            var articles = await articleRepository.Get();
+            var articles = await articleRepository.Get(mapper.Map<QueryParams>(queryParamsModel));
             return mapper.Map<IEnumerable<ArticleModel>>(articles);
         }
 

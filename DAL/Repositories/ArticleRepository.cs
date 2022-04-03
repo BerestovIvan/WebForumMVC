@@ -1,9 +1,11 @@
 ﻿using DAL.DbContext;
 using DAL.Entity;
+using DAL.Models;
 using DAL.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DAL.Repositories
@@ -17,9 +19,14 @@ namespace DAL.Repositories
             this.context = context;
         }
 
-        public async Task<IEnumerable<Article>> Get()
+        public async Task<IEnumerable<Article>> Get(QueryParams queryParams)
         {
-            return await context.Articles.
+            IQueryable<Article> articles = context.Articles;
+
+            foreach (var predicate in queryParams.Predicates)
+                articles = articles.Where(predicate);
+
+            return await articles.
                 Include(x => x.Comments).
                 Include(x => x.Creator).
                 Include(x => x.Topic).

@@ -11,6 +11,7 @@ using WebForumMVC.Models.PutModels;
 using WebForumMVC.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using WebForumMVC.Models.QueryParam;
 
 namespace WebForumMVC.Controllers
 {
@@ -25,14 +26,14 @@ namespace WebForumMVC.Controllers
             this.topicService = topicService;
             this.mapper = mapper;
         }
-
-        public async Task<IActionResult> Index()
+         
+        public async Task<IActionResult> Index(QueryParamsViewModel paramsViewModel)
         {
-            var articleViewModels = await articleService.Get();
-
-            return View(mapper.Map<IEnumerable<ArticleViewModel>>(articleViewModels));
+            var articleModels = await articleService.Get(mapper.Map<QueryParamsModel>(paramsViewModel));
+            var articleViewModels = mapper.Map<IEnumerable<ArticleViewModel>>(articleModels);
+            return View(articleViewModels);
         }
-
+        
         public async Task<IActionResult> Details(Guid id)
         {
             var article = await articleService.Get(id);

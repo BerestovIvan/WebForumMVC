@@ -3,6 +3,7 @@ using BLL.Models;
 using WebForumMVC.Models.AuthenticationModels;
 using WebForumMVC.Models.PostModels;
 using WebForumMVC.Models.PutModels;
+using WebForumMVC.Models.QueryParam;
 using WebForumMVC.Models.ViewModels;
 
 namespace WebForumMVC.Mapper
@@ -33,6 +34,8 @@ namespace WebForumMVC.Mapper
 
             CreateMap<ArticlePutModel, ArticleViewModel>().ReverseMap();
             CreateMap<TopicPutModel, TopicViewModel>().ReverseMap();
+
+            CreateMap<QueryParamsModel, QueryParamsViewModel>().ReverseMap();
         }
     }
 }

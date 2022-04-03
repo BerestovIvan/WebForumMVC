@@ -26,7 +26,7 @@ namespace WebForumMVC.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            return View(mapper.Map<IEnumerable<TopicPostModel>>(await topicService.Get()));
+            return View(mapper.Map<IEnumerable<TopicViewModel>>(await topicService.Get()));
         }
 
         [AllowAnonymous]

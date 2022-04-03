@@ -7,7 +7,7 @@ namespace BLL.ServiceInterfaces
 {
     public interface IArticleService
     {
-        Task<IEnumerable<ArticleModel>> Get();
+        Task<IEnumerable<ArticleModel>> Get(QueryParamsModel queryParamsModel);
         Task<ArticleModel> Get(Guid id);
         Task<ArticleModel> Create(ArticleModel articleModel);
         Task<ArticleModel> Update(ArticleModel articleModel);
