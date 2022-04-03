@@ -37,6 +37,7 @@ namespace DAL.Repositories
         {
             return await context.Articles.
                 Include(x => x.Comments).
+                ThenInclude(q=>q.ApplicationUser).
                 Include(x => x.Creator).
                 Include(x => x.Topic).
                 AsNoTracking().

@@ -19,12 +19,18 @@ namespace DAL.Repositories
 
         public async Task<IEnumerable<Comment>> Get()
         {
-            return await context.Comments.AsNoTracking().ToListAsync();
+            return await context.Comments.
+                Include(x=>x.ApplicationUser).
+                AsNoTracking().
+                ToListAsync();
         }
 
         public async Task<Comment> Get(Guid id)
         {
-            return await context.Comments.AsNoTracking().FirstOrDefaultAsync(comment => comment.Id == id);
+            return await context.Comments.
+                Include(x => x.ApplicationUser).
+                AsNoTracking().
+                FirstOrDefaultAsync(comment => comment.Id == id);
         }
 
         public async Task<Comment> Create(Comment comment)

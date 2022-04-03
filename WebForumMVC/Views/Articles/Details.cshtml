@@ -37,17 +37,38 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Comments)
         </dt>
-        <dd class="col-sm-10">
+        
+
+    </dl>
+</div>
+<div class="comments">
+    <div class="createComment">
+        @if (!string.IsNullOrEmpty(Context.Request.Headers["UserId"].ToString()))
+        {
+            await Html.RenderPartialAsync("/Views/Comments/Create.cshtml",
+          new WebForumMVC.Models.PostModels.CommentPostModel { ArticleId = Model.Id });
+        }
+        else
+        {
+             @Html.ActionLink(
+            "Sign in to write comment.",
+             "Login",
+             "Authenticate")
+        }
+    </div>
+    <dl class="row">
+        <dt>
             @foreach (var comment in Model.Comments)
             {
                 <p>@comment.ApplicationUser.Email</p>
                 <p>@comment.Text</p>
             }
-            @{ await Html.RenderPartialAsync("/Views/Comments/Create.cshtml",
-        new WebForumMVC.Models.PostModels.CommentPostModel { ArticleId = Model.Id}); }
-        </dd>
+        </dt>
     </dl>
+
+
 </div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
