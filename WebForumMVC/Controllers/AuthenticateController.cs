@@ -109,7 +109,7 @@ namespace WebForumMVC.Controllers
             {
                 HttpContext.Session.SetString("UserId", loginResultPostModel.UserId);
                 HttpContext.Session.SetString("token", new JwtSecurityTokenHandler().WriteToken(loginResultPostModel.Token));
-                Request.Headers.Add("Authorization", "Bearer" + new JwtSecurityTokenHandler().WriteToken(loginResultPostModel.Token));
+                Request.Headers.Add("Authorization", "Bearer" + new JwtSecurityTokenHandler(    ).WriteToken(loginResultPostModel.Token));
                 return RedirectToAction("Index", "Topics");
             }
             return Unauthorized();

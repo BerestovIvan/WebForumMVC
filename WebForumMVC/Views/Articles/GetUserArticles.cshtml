@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<WebForumMVC.Models.ViewModels.ArticleViewModel>
 
+<link rel="stylesheet" href="~/css/GetUserArticles.css" />
+
 @if (!Model.Any())
 {
     <p>You don't have any articles yet </p>
@@ -7,10 +9,18 @@
 }
 else
 {
-    @foreach (var item in Model)
-    {
-        <p>@Html.DisplayFor(modelItem => item.Title)</p>
-        <textarea>@Html.DisplayFor(modelItem => item.Text)</textarea>
-        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-    }
+    <div class="col-sm-12">
+        @foreach (var item in Model)
+        {
+            <div class="container shortArticle">
+                <div class="row m-1">
+                    <p>Title: @Html.DisplayFor(modelItem => item.Title)</p>
+                    <a class="edit" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                </div>
+                <div class="m-1">
+                    <p>@Html.DisplayFor(modelItem => item.Text)</p>
+                </div>
+            </div>
+        }
+    </div>
 }

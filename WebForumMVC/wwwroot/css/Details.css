@@ -1,0 +1,20 @@
+﻿.commentBody {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border: 1px grey solid;
+    margin: 10px 0;
+    border-radius: 3px;
+    padding: 4px;
+    background-color: #e9ecef;
+}
+
+.commentCreator {
+    width: 25%;
+    border-right: 1px black solid;
+}
+
+.commentText {
+    margin: 0 6px;
+    width: calc(75% - 12px);
+}

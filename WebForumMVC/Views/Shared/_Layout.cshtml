@@ -17,7 +17,10 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Topics" asp-action="Index">Articles</a>
+                        </li>
                         @if (string.IsNullOrEmpty(Context.Request.Headers["UserId"].ToString()))
                         {
                         <li class="nav-item">
@@ -42,9 +45,6 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Profile</a>
                         </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Topics" asp-action="Index">Articles</a>
-                        </li>
                     </ul>
                 </div>
             </div>

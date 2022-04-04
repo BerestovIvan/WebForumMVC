@@ -1,32 +1,20 @@
 ﻿@model WebForumMVC.Models.ViewModels.ArticleViewModel
+<link rel="stylesheet" href="~/css/Details.css" />
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>@Html.DisplayFor(model => model.Title)</h1>
 
 <div>
-    <h4>Article</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Text)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Text)
-        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Creator)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Creator.Id)
+            @Html.DisplayFor(model => model.Creator.Email)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Topic)
@@ -34,39 +22,57 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Topic.Title)
         </dd>
+        <dd class="col-sm-12">
+            <div class="form-group w-100">
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="12" resize="vertical" readonly>@Html.DisplayFor(model => model.Text)</textarea>
+            </div>
+        </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Comments)
+            <p>User's comments'</p>
         </dt>
-        
+
 
     </dl>
 </div>
 <div class="comments">
-    <div class="createComment">
-        @if (!string.IsNullOrEmpty(Context.Request.Headers["UserId"].ToString()))
-        {
-            await Html.RenderPartialAsync("/Views/Comments/Create.cshtml",
-          new WebForumMVC.Models.PostModels.CommentPostModel { ArticleId = Model.Id });
-        }
-        else
-        {
-             @Html.ActionLink(
-            "Sign in to write comment.",
-             "Login",
-             "Authenticate")
-        }
-    </div>
-    <dl class="row">
-        <dt>
-            @foreach (var comment in Model.Comments)
+    <div class="row">
+        <div class="createComment col-sm-12">
+            @if (!string.IsNullOrEmpty(Context.Request.Headers["UserId"].ToString()))
             {
-                <p>@comment.ApplicationUser.Email</p>
-                <p>@comment.Text</p>
+                await Html.RenderPartialAsync("/Views/Comments/Create.cshtml",
+              new WebForumMVC.Models.PostModels.CommentPostModel { ArticleId = Model.Id });
             }
-        </dt>
-    </dl>
-
-
+            else
+            {
+                @Html.ActionLink(
+               "Sign in to write comment.",
+                "Login",
+                "Authenticate")
+            }
+        </div>
+        <div class="col-lg-12">
+            @if (Model.Comments.Count() == 0)
+            {
+                <p>Post first comment!</p>
+            }
+            else
+            {
+                <div class="container" style="padding:0"> 
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <div class="commentBody">
+                            <div class="commentCreator">
+                                <p>User's email: @comment.ApplicationUser.Email</p>
+                            </div>
+                            <div class="commentText">
+                                <p>@comment.Text</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 <div>

@@ -1,4 +1,5 @@
 ﻿using DAL.Entity;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace DAL.RepositoriesInterfaces
 {
     public interface ITopicRepository
     {
-        Task<IEnumerable<Topic>> Get();
+        Task<IEnumerable<TopicDalModel>> Get();
         Task<Topic> Get(Guid id);
         Task<Topic> Get(string title);
         Task<Topic> Create(Topic topic);

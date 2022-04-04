@@ -1,5 +1,7 @@
-﻿using DAL.DbContext;
+﻿using AutoMapper;
+using DAL.DbContext;
 using DAL.Entity;
+using DAL.Models;
 using DAL.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,15 +15,27 @@ namespace DAL.Repositories
     public class TopicRepository : ITopicRepository
     {
         readonly ApplicationDbContext context;
+        readonly IMapper mapper;
 
-        public TopicRepository(ApplicationDbContext context)
+        public TopicRepository(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<Topic>> Get()
+        public async Task<IEnumerable<TopicDalModel>> Get()
         {
-            return await context.Topics.AsNoTracking().ToListAsync();
+            var topics = await context.Topics.AsNoTracking().ToListAsync();
+
+            var topicModels = mapper.Map<List<TopicDalModel>>(topics);
+
+            var articles = await context.Articles.AsNoTracking().ToListAsync();
+
+            foreach(var topic in topicModels)
+            {
+                topic.ArticleNumber = articles.Count(article => article.TopicId == topic.Id);
+            }
+            return topicModels;
         }
 
         public async Task<Topic> Get(Guid id)
