@@ -1,17 +1,21 @@
 ﻿@model IEnumerable<WebForumMVC.Models.ViewModels.TopicViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "AdminPage";
 }
 
 <h1>Topics</h1>
 
+<p>
+    <a asp-action="Create">Create new topic</a>
+</p>
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +30,10 @@
                      new WebForumMVC.Models.QueryParam.QueryParamsViewModel{ TopicId = item.Id },
                      null
                      )
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }

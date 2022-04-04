@@ -12,7 +12,5 @@ else
         <p>@Html.DisplayFor(modelItem => item.Title)</p>
         <textarea>@Html.DisplayFor(modelItem => item.Text)</textarea>
         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
     }
 }
-

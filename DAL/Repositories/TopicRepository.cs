@@ -4,6 +4,8 @@ using DAL.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DAL.Repositories
@@ -48,6 +50,16 @@ namespace DAL.Repositories
 
         public async Task Delete(Topic topic)
         {
+            List<Comment> comments = new List<Comment>();
+            var articles = await context.Articles.Where(article => article.TopicId == topic.Id).AsNoTracking().ToListAsync();
+            foreach(var article in articles)
+            {
+                comments.AddRange(context.Comments.Where(comment => comment.ArticleId == article.Id).AsNoTracking());
+            }
+            context.Comments.RemoveRange(comments);
+
+            context.Articles.RemoveRange(articles);
+
             context.Topics.Remove(topic);
             await context.SaveChangesAsync();
         }

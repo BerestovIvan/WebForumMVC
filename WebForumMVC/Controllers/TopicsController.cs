@@ -43,11 +43,20 @@ namespace WebForumMVC.Controllers
             return View(mapper.Map<TopicViewModel>(topic));
         }
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AdminPage()
+        {
+            return View(mapper.Map<IEnumerable<TopicViewModel>>(await topicService.Get()));
+        }
+
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(TopicPostModel topic)
         {
@@ -72,6 +81,7 @@ namespace WebForumMVC.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title")] TopicPutModel topic)
         {
             if (id != topic.Id)
@@ -88,6 +98,7 @@ namespace WebForumMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var topic = await topicService.Get(id);
@@ -99,6 +110,7 @@ namespace WebForumMVC.Controllers
             return View(topic);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {

@@ -60,6 +60,9 @@ namespace DAL.Repositories
 
         public async Task Delete(Article article)
         {
+            var comments = await context.Comments.Where(c => c.ArticleId == article.Id).ToListAsync();
+            context.Comments.RemoveRange(comments);
+ 
             context.Articles.Remove(article);
             await context.SaveChangesAsync();
         }
