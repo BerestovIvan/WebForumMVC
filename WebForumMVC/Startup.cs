@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WebForumMVC.Configuration.Abstractions;
 using WebForumMVC.DependencyInjection;
 using WebForumMVC.Mapper;
 
@@ -33,9 +34,9 @@ namespace WebForumMVC
 
             services.AddControllersWithViews();
 
-            services.AddAutoMapper(typeof(MapperBLLAndApi), typeof(MapperBLLAndDAL));
+            services.AddAutoMapper(typeof(MapperBLLAndApi), typeof(MapperBLLAndDAL), typeof(MapperDal));
 
-            DI.AddDependencyInjection(services);
+            services.AddDependencyInjection();
 
             services.AddDbContext<ApplicationDbContext>(options => options.
           UseSqlServer(Configuration.GetConnectionString("WebForumMVC")));
@@ -66,7 +67,7 @@ namespace WebForumMVC
            });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbContextSeedData seeder)
         {
             if (env.IsDevelopment())
             {
@@ -110,6 +111,8 @@ namespace WebForumMVC
             {
                 endpoints.MapDefaultControllerRoute();
             });
+            var seed = seeder.CreateAdmin();
+            seed.Wait();
         }
     }
 }

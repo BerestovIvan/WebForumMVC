@@ -23,6 +23,7 @@ namespace WebForumMVC.Mapper
                 loginModel => loginModel.MapFrom(src => src.Email));
 
             CreateMap<TopicModel, Topic>().ReverseMap();
+            CreateMap<TopicModel, TopicDalModel>().ReverseMap();
 
             CreateMap<ArticleModel, Article>().ReverseMap();
             CreateMap<UserModel, ApplicationUser>().ReverseMap();

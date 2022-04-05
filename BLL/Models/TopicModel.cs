@@ -10,5 +10,6 @@ namespace BLL.Models
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
+        public int ArticleNumber { get; set; }
     }
 }

@@ -3,12 +3,14 @@ using BLL.Services;
 using DAL.Repositories;
 using DAL.RepositoriesInterfaces;
 using Microsoft.Extensions.DependencyInjection;
+using WebForumMVC.Configuration.Abstractions;
+using WebForumMVC.Configuration.Seeding;
 
 namespace WebForumMVC.DependencyInjection
 {
     public static class DI
     {
-        public static void AddDependencyInjection(this IServiceCollection services)
+        public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
@@ -21,6 +23,9 @@ namespace WebForumMVC.DependencyInjection
 
             services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<ICommentService, CommentService>();
+
+            services.AddTransient<IDbContextSeedData, DbContextSeedData>();
+            return services;
         }
     }
 }
