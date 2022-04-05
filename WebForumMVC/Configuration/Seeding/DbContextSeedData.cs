@@ -1,4 +1,6 @@
-﻿using DAL.Entity;
+﻿using BLL.Exceptions;
+using BLL.ServiceInterfaces;
+using DAL.Entity;
 using DAL.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,40 +13,36 @@ namespace WebForumMVC.Configuration.Seeding
 {
     public class DbContextSeedData : IDbContextSeedData
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IUserService userService;
 
-        public DbContextSeedData(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public DbContextSeedData(IUserService userService)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            this.userService = userService;
         }
 
-        public async Task CreateAdmin()
+        public async Task Create()
         {
-            var roleName = UserRoles.Admin.ToString();
-            var role = await _roleManager.FindByNameAsync(roleName);
-
-            if(role == null)
+            var result = await userService.RegisterAdmin(
+                new BLL.Models.RegisterModel { Email = "admin1@gmail.com", Password = "Berestov1!" });
+            if(result != null)
             {
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin.ToString()));
+                if (!result.Succeeded)
+                    throw new CantCreateAdminException("Admin creation exception");
+                result = await userService.RegisterAdmin(
+               new BLL.Models.RegisterModel { Email = "admin2@gmail.com", Password = "Berestov1!" });
+                if (!result.Succeeded)
+                    throw new CantCreateAdminException("Admin creation exception");
+
+                result = await userService.Register(
+                new BLL.Models.RegisterModel { Email = "user1@gmail.com", Password = "Berestov123!" });
+                if (!result.Succeeded)
+                    throw new UserCreationException("User creation exception");
+                result = await userService.RegisterAdmin(
+               new BLL.Models.RegisterModel { Email = "user2@gmail.com", Password = "Berestov12!" });
+                if (!result.Succeeded)
+                    throw new UserCreationException("User creation exception");
             }
-
-            role = await _roleManager.FindByNameAsync(roleName);
-
-            if (role != null)
-            {
-                var admin = new ApplicationUser(){UserName = "admin1@gmail.com", NormalizedUserName = "ADMIN", Email = "admin1@gmail.com", NormalizedEmail = "ADMIN1@GMAIL.COM"};
-
-                var password = "Berestov1!";
-
-                var checkingInDb = await _userManager.FindByNameAsync(admin.UserName);
-                if (checkingInDb == null)
-                {
-                    await _userManager.CreateAsync(admin, password);
-                    await _userManager.AddToRoleAsync(admin, roleName);
-                }
-            }
+           
         }
     }
 }

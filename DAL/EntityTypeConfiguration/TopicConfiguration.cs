@@ -11,8 +11,7 @@ namespace DAL.EntityTypeConfiguration
             builder.HasKey(topic => topic.Id);
             builder.HasIndex(topic => topic.Id).IsUnique();
             builder.HasIndex(topic => topic.Title).IsUnique();
-            builder.Property(topic => topic.Title).HasMaxLength(20).IsRequired();
-
+            builder.Property(topic => topic.Title).HasMaxLength(60).IsRequired();
             builder.HasMany(c => c.Articles).
             WithOne(e => e.Topic)
             .OnDelete(DeleteBehavior.Cascade);

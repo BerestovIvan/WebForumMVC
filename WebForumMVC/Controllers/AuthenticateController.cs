@@ -61,7 +61,7 @@ namespace WebForumMVC.Controllers
             return View();
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("Register-admin")]
         public async Task<IActionResult> RegisterAdmin(RegisterPostModel registerPostModel)
         {
@@ -105,13 +105,15 @@ namespace WebForumMVC.Controllers
 
             var loginResultPostModel = mapper.Map<LoginResultPostModel>(loginResultModel);
 
-            if (loginResultPostModel.Token != null)
-            {
-                HttpContext.Session.SetString("UserId", loginResultPostModel.UserId);
-                HttpContext.Session.SetString("token", new JwtSecurityTokenHandler().WriteToken(loginResultPostModel.Token));
-                Request.Headers.Add("Authorization", "Bearer" + new JwtSecurityTokenHandler(    ).WriteToken(loginResultPostModel.Token));
-                return RedirectToAction("Index", "Topics");
-            }
+            if (loginResultPostModel != null)
+                if (loginResultPostModel.Token != null)
+                {
+                    HttpContext.Session.SetString("UserId", loginResultPostModel.UserId);
+                    HttpContext.Session.SetString("token", new JwtSecurityTokenHandler().WriteToken(loginResultPostModel.Token));
+                    Request.Headers.Add("Authorization", "Bearer" + new JwtSecurityTokenHandler().WriteToken(loginResultPostModel.Token));
+                    return RedirectToAction("Index", "Topics");
+                }
+
             return Unauthorized();
         }
 

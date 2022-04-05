@@ -89,7 +89,7 @@ namespace WebForumMVC
                 {
                     context.Request.Headers.Add("Authorization", "Bearer " + token);
                 }
-                await next();
+                    await next();
             });
 
             app.Use(async (context, next) =>
@@ -106,12 +106,12 @@ namespace WebForumMVC
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+     
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
             });
-            var seed = seeder.CreateAdmin();
+            var seed = seeder.Create();
             seed.Wait();
         }
     }

@@ -51,7 +51,7 @@ namespace DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -170,7 +170,7 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TopicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },

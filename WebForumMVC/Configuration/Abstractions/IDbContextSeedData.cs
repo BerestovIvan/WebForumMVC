@@ -7,6 +7,6 @@ namespace WebForumMVC.Configuration.Abstractions
 {
     public interface IDbContextSeedData
     {
-        public Task CreateAdmin();
+        public Task Create();
     }
 }

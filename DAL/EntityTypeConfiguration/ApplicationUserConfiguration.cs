@@ -19,8 +19,6 @@ namespace DAL.EntityTypeConfiguration
             builder.HasMany(c => c.CreatedArticles).
              WithOne(e => e.Creator)
              .OnDelete(DeleteBehavior.ClientCascade);
-
-
         }
     }
 }
